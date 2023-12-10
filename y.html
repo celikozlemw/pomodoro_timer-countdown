@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+
+    <script src="https://kit.fontawesome.com/6f3103b13c.js" crossorigin="anonymous"></script>
+
+    <style>
+        :root {
+            font-size: 62.5%;
+            --color-primary: hsl(240, 7%, 20%);
+            --color-secondary: hsl(350, 20%, 94%);
+            --color-font: hsla(0, 0%, 100%, 0.902);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            background-color: var(--color-primary);
+            font-size: 1.6rem;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        p, i, h1 {
+            color: var(--color-font);
+        }
+
+        i {
+            font-size: 3.2rem;
+        }
+
+        h1 {
+            font-size: 3.2rem;
+        }
+
+        section {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        .timer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 30rem;
+            height: 30rem;
+            border-radius: 50%;
+            -webkit-box-shadow: 0px 0px 15px 10px var(--color-shadow); 
+            box-shadow: 0px 0px 15px 10px var(--color-shadow);
+        }
+
+        .circle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 26rem;
+            height: 26rem;
+            border-radius: 50%;
+            background-color: var(--color-secondary);
+            position: relative;
+            margin-top: -100px;
+            margin-right: -1500px;
+        }
+
+        .circle::before {
+            content: '';
+            position: absolute;
+            width: 95%;
+            height: 95%;
+            border-radius: 50%;
+            background-color: var(--color-primary);
+        }
+
+        .time {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .time p {
+            font-size: 5.6rem;
+        }
+
+        .time p:nth-of-type(2) {
+            position: relative;
+            top: -.5rem;
+            margin-inline: 1rem;
+        }
+
+        .controls button {
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            margin-top: 300px;
+            margin-left: 585px;
+        }
+
+        .controls #reset {
+            display: none;
+            margin-top: 300px;
+            margin-left: 585px;
+        }
+
+        .todo-list {
+            background-color: #000000;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            color: white;
+            margin-top: 20px;
+        }
+  
+        .todo-list h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+  
+        .todo-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+  
+        .todo-list li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+  
+        .todo-list input[type="checkbox"] {
+            margin-right: 10px;
+        }
+  
+        .todo-list label {
+            font-size: 16px;
+        }
+
+        #countdown-container {
+            text-align: center;
+            margin-top: 20px; 
+        }
+
+        #circle-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            background-color: #eee;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #countdown {
+            font-size: 36px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        #inputForm {
+            text-align: center;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <div class="timer">
+            <div class="circle">
+                <div class="time">
+                    <p id="minutes"></p>
+                    <p>:</p>
+                    <p id="seconds"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="start" onclick="start()"><i class="fa-solid fa-play"></i></button>
+            <a id="reset" href="./"><i class="fa-solid fa-arrow-rotate-left"></i></a>
+        </div>
+    </section>
+
+    <div class="todo-list">
+        <h2>List</h2>
+        <ul>
+            <li>
+                <input type="checkbox" id="task1" name="task1">
+                <label for="task1">
+                    <span class="task-number"></span>
+                    <span class="task-text">Task 1</span>
+                    <input type="text" class="task-input" placeholder="write the task">
+                </label>
+            </li>
+            <li>
+                <input type="checkbox" id="task2" name="task2">
+                <label for="task2">
+                    <span class="task-number"></span>
+                    <span class="task-text">Task 2</span>
+                    <input type="text" class="task-input" placeholder="write the task">
+                </label>
+            </li>
+            <li>
+                <input type="checkbox" id="task3" name="task3">
+                <label for="task3">
+                    <span class="task-number"></span>
+                    <span class="task-text">Task 3</span>
+                    <input type="text" class="task-input" placeholder="write the task">
+                </label>
+            </li>
+        </ul>
+    </div>
+
+    <div id="countdown-container">
+        <div id="circle-container">
+            <div id="countdown">00:00:00</div>
+            <form id="inputForm">
+                <label for="duration"> </label>
+                <input type="number" id="duration" min="1" required>
+                <button type="button" onclick="startCountdown()">start</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let countdown;
+        let durationInput = document.getElementById('duration');
+        let countdownDisplay = document.getElementById('countdown');
+
+        function startCountdown() {
+            let durationInMinutes = parseInt(durationInput.value);
+
+            if (isNaN(durationInMinutes) || durationInMinutes <= 0) {
+                alert('Geçerli bir süre girin.');
+                return;
+            }
+
+            let durationInSeconds = durationInMinutes * 60;
+            let endTime = new Date().getTime() + durationInSeconds * 1000;
+
+            countdown = setInterval(function() {
+                let now = new Date().getTime();
+                let distance = endTime - now;
+
+                if (distance <= 0) {
+                    clearInterval(countdown);
+                    countdownDisplay.innerHTML = '';
+                } else {
+                    let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    hours = hours < 10 ? '0' + hours : hours;
+                    minutes = minutes < 10 ? '0' + minutes : minutes;
+                    seconds = seconds < 10 ? '0' + seconds : seconds;
+
+                    countdownDisplay.innerHTML = hours + ':' + minutes + ':' + seconds;
+                }
+            }, 1000);
+        }
+
+        let workTime = 25;
+        let breakTime = 5;
+        let seconds = "00";
+
+        window.onload = () => {
+            document.getElementById('minutes').innerHTML = workTime;
+            document.getElementById('seconds').innerHTML = seconds;
+        };
+
+        function start() {
+            document.getElementById('start').style.display = "none";
+            document.getElementById('reset').style.display = "block";
+
+            seconds = 59;
+
+            let workMinutes = workTime - 1;
+            let breakMinutes = breakTime - 1;
+
+            breakCount = 0;
+
+            let timerFunction = () => {
+                document.getElementById('minutes').innerHTML = workMinutes;
+                document.getElementById('seconds').innerHTML = seconds;
+
+                seconds = seconds - 1;
+
+                if (seconds === 0) {
+                    workMinutes = workMinutes - 1;
+                    if (workMinutes === -1) {
+                        if (breakCount % 2 === 0) {
+                            workMinutes = breakMinutes;
+                            breakCount++;
+                        } else {
+                            workMinutes = workTime;
+                            breakCount++;
+                        }
+                        seconds = 59;
+                    }
+                }
+            };
+
+            setInterval(timerFunction, 1000);
+        }
+    </script>
+</body>
+</html>
